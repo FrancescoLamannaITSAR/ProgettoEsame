@@ -1,0 +1,49 @@
+[
+    {
+        "Nome": null,
+        "Razza": null,
+        "Classe": null,
+        "Livello": null,
+        "Bonus competenza": null,
+        "Punti vita": null,
+        "Iniziativa": null,
+        "Velocità": null,
+        "Caratteristiche": {
+            "Forza": null,
+            "Destrezza": null,
+            "Costituzione": null,
+            "Intelligenza": null,
+            "Saggezza": null,
+            "Carisma": null
+        },
+        "Tiri salvezza": {
+            "Forza": null,
+            "Destrezza": null,
+            "Costituzione": null,
+            "Intelligenza": null,
+            "Saggezza": null,
+            "Carisma": null
+        },
+       "Abilità": {
+            "Acrobazia": null,
+            "Arcano": null,
+            "Atletica": null,
+            "Intimidire": null,
+            "Percezione": null,
+            "Persuasione": null,
+            "Furtività": null,
+            "Rapporto con gli animali": null,
+            "Medicina": null,
+            "Natura": null,
+            "Religione": null,
+            "Storia": null,
+            "Sleight of Hand": null,
+            "Ingegneria": null,
+            "Manipolazione": null
+        },
+        "Competenze": {
+            "Tiri salvezza": [],
+            "Abilità": []
+        }
+    }
+]
