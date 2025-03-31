@@ -1,0 +1,61 @@
+class Caratteristiche:
+    def __init__(self, dati):
+        self.forza = dati['Forza']
+        self.destrezza = dati['Destrezza']
+        self.costituzione = dati['Costituzione']
+        self.intelligenza = dati['Intelligenza']
+        self.saggezza = dati['Saggezza']
+        self.carisma = dati['Carisma']
+
+    def __init__(self, dati, tiri_salvezza, bonus_competenza):
+        self.forza = calcolaBonus(dati["Forza"], "Forza", tiri_salvezza, bonus_competenza)
+        self.destrezza = calcolaBonus(dati["Destrezza"], "Destrezza", tiri_salvezza, bonus_competenza)
+        self.costituzione = calcolaBonus(dati["Costituzione"], "Costituzione", tiri_salvezza, bonus_competenza)
+        self.intelligenza = calcolaBonus(dati["Intelligenza"], "Intelligenza", tiri_salvezza, bonus_competenza)
+        self.saggezza = calcolaBonus(dati["Saggezza"], "Saggezza", tiri_salvezza, bonus_competenza)
+        self.carisma = calcolaBonus(dati["Carisma"], "Carisma", tiri_salvezza, bonus_competenza)
+
+    def getBonus(self, caratteristica):
+        #return ((stat - 10) / 2)
+
+        #Posso accedere al dato in modo dinamico tipo:
+        #str = "Forza"
+        #self.str
+        
+        pass
+
+
+
+
+class Abilita:
+    def __init__(self, dati):
+        self.acrobazia = dati['Acrobazia']
+        self.addestrare_animali = dati['Addestrare Animali']
+        self.arcano = dati['Arcano']
+        self.atletica = dati['Atletica']
+        self.furtivita = dati['Furtività']
+        self.indagare = dati['Indagare']
+        self.inganno = dati['Inganno']
+        self.intimidire = dati['Intimidire']
+        self.intrattenere = dati['Intrattenere']
+        self.intuizione = dati['Intuizione']
+        self.medicina = dati['Medicina']
+        self.natura = dati['Natura']
+        self.percezione = dati['Percezione']
+        self.persuasione = dati['Persuasione']
+        self.rapidita_di_mano = dati['Rapidità di Mano']
+        self.religione = dati['Religione']
+        self.sopravvivenza = dati['Sopravvivenza']
+        self.storia = dati['Storia']
+
+
+def costruisciTiriSalvezzaOLD(dati):
+    TS = {
+        "Forza": applicaBonusCompetenza(dati["Forza"], "Forza", dati['Competenze']['Tiri Salvezza'], dati['Competenze']['Bonus Competenza']),
+        "Destrezza": applicaBonusCompetenza(dati["Destrezza"], "Destrezza", dati['Competenze']['Tiri Salvezza'], dati['Competenze']['Bonus Competenza']),
+        "Costituzione": applicaBonusCompetenza(dati["Costituzione"], "Costituzione", dati['Competenze']['Tiri Salvezza'], dati['Competenze']['Bonus Competenza']),
+        "Intelligenza": applicaBonusCompetenza(dati["Intelligenza"], "Intelligenza", dati['Competenze']['Tiri Salvezza'], dati['Competenze']['Bonus Competenza']),
+        "Saggezza": applicaBonusCompetenza(dati["Saggezza"], "Saggezza", dati['Competenze']['Tiri Salvezza'], dati['Competenze']['Bonus Competenza']),
+        "Carisma": applicaBonusCompetenza(dati["Carisma"], "Carisma", dati['Competenze']['Tiri Salvezza'], dati['Competenze']['Bonus Competenza'])
+    }
+    return TS

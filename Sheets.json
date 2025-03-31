@@ -4,8 +4,7 @@
         "Razza": null,
         "Classe": null,
         "Livello": null,
-        "Bonus competenza": null,
-        "Punti vita": null,
+        "Punti Vita": null,
         "Iniziativa": null,
         "Velocità": null,
         "Caratteristiche": {
@@ -26,23 +25,27 @@
         },
        "Abilità": {
             "Acrobazia": null,
+            "Addestrare Animali": null,
             "Arcano": null,
             "Atletica": null,
-            "Intimidire": null,
-            "Percezione": null,
-            "Persuasione": null,
             "Furtività": null,
-            "Rapporto con gli animali": null,
+            "Indagare": null,
+            "Inganno": null,
+            "Intimidire": null,
+            "Intrattenere": null,
+            "Intuizione": null,
             "Medicina": null,
             "Natura": null,
+            "Percezione": null,
+            "Persuasione": null,
+            "Rapidità di Mano": null,
             "Religione": null,
-            "Storia": null,
-            "Sleight of Hand": null,
-            "Ingegneria": null,
-            "Manipolazione": null
+            "Sopravvivenza": null,
+            "Storia": null
         },
         "Competenze": {
-            "Tiri salvezza": [],
+            "Bonus Competenza": null,
+            "Tiri Salvezza": [],
             "Abilità": []
         }
     }
