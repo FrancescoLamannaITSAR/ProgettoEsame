@@ -9,7 +9,6 @@ classi = [
     (1, "Barbaro"), (2, "Bardo"), (3, "Chierico"), (4, "Druido"), (5, "Guerriero"),
     (6, "Ladro"), (7, "Mago"), (8, "Monaco"), (9, "Paladino"), (10, "Ranger"), (11, "Stregone"), (12, "Warlock")
 ]
-statistiche = {'F': 'Forza', 'D': 'Destrezza', 'O': 'Costituzione', 'I': 'Intelligenza', 'S': 'Saggezza', 'A': 'Carisma'}
 
 def menu():
     while True:
@@ -34,13 +33,13 @@ def menu():
 
 def scrivi_scheda():
     dati = {}
-    dati['Nome'] = input("Come si chiama il tuo eroe? ")
+    dati['Nome'] = input("Come si chiama il tuo eroe? ")    #TODO: controlla se esiste già
     dati['Razza'] = input_elenco('razza', razze)
     dati['Classe'] = input_elenco('classe', classi)
     dati['Caratteristiche'] = input_caratteristiche()
-    dati['Competenze'] = input("Inserisci le competenze: ") #TODO: Scratchare abilità e TS da classe
-    print("Scheda salvata con i seguenti dati:", dati)
+    dati['Competenze'] = input_competenze() #TODO: Scratchare abilità e TS da classe
     scheda = Business.Scheda(dati)
+    print("Scheda salvata con i seguenti dati:\n", scheda)
 
 def leggi_scheda():
     print("Funzione per leggere una scheda.")
@@ -57,7 +56,8 @@ def input_elenco(tipo, lista):
             print(lista)
             scelta = int(input(f"Inserisci il numero corrispondente alla {tipo}: "))
             if 1 <= scelta <= len(lista):
-                return(lista[scelta - 1])
+                print(f"Hai scelto: {lista[scelta - 1][1]}")    #Prendo il secondo elemento della tupla, dentro la lista
+                return(lista[scelta - 1][1])
             else:
                 print("Numero non valido. Riprova.")
         except ValueError:
@@ -65,7 +65,9 @@ def input_elenco(tipo, lista):
 
 def input_caratteristiche():
     scores = []
-    stats = {'Forza' : -1, 'Destrezza' : -1, 'Costituzione' : -1, 'Intelligenza' : -1, 'Saggezza' : -1, 'Carisma' : -1}
+    caratteristiche = pd.DataFrame({
+        'Caratteristica': ['Forza', 'Destrezza', 'Costituzione', 'Intelligenza', 'Saggezza', 'Carisma'],
+        'Valore': [-1, -1, -1, -1, -1, -1]})
     input('Tiriamo i punteggi per le caratteristiche, 6 serie di 4 dadi a 6 facce, cui tolto il valore più basso, vengono sommati. >>>')
 
     for i in range (6):
@@ -86,19 +88,34 @@ def input_caratteristiche():
     for score in scores:
         while True:
             print(f"Punteggio da assegnare: {score}")
-            print("Statistiche disponibili:")
-            for key, stat in statistiche.items():
-                if stats[stat] == -1:
-                    print(f"- {key}: {stat}")
-            scelta = input("A quale statistica vuoi assegnare questo punteggio? (Inserisci la lettera corrispondente) ").upper()
-            if scelta in statistiche and stats[statistiche[scelta]] == -1:
-                stats[statistiche[scelta]] = score
-                break
-            else:
-                print("Scelta non valida, riprova.")
+            print("Caratteristiche disponibili:")
+            #Qui
+            for i, row in caratteristiche.iterrows():
+                if (row["Valore"] == -1):
+                    print(f"- {i}: {row['Caratteristica']}")
 
-    print("Caratteristiche finali assegnate:", stats)
-    return stats
+            scelta = input("A quale statistica vuoi assegnare questo punteggio? (Inserisci l'indice) ")
+            
+            try:
+                indice = int(scelta)  # Prova a convertire l'input in intero
+                if indice in caratteristiche.index and caratteristiche.at[indice, "Valore"] == -1:
+                    caratteristiche.at[indice, "Valore"] = score  # Assegna il punteggio
+                    break  # Esce dal ciclo
+                else:
+                    print("Indice non valido o statistica già assegnata, riprova.")
+            except ValueError:
+                print("Inserisci un numero valido.")  # Messaggio d'errore se la conversione fallisce
 
+    print("Caratteristiche finali assegnate:", caratteristiche)
+    return caratteristiche
+
+def input_competenze(): #TODO: fare
+    comp = {
+                "Bonus Competenza": 2,
+                "Tiri Salvezza": ["Destrezza", "Intelligenza"],
+                "Abilità": ["Acrobazia", "Furtività", "Percezione", "Storia"]
+            }
+    return comp
+
+print("Avventuriero, benvenuto nel programma di creazione schede per D&D!")
 menu()
-

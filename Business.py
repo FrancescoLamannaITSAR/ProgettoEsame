@@ -1,8 +1,11 @@
 import Persistence
+import pandas as pd
 
 class Scheda:
     #In lettura
-    def __init__(self, dati):
+    def __init__(self, dati, bob):
+        self.bob = bob      #placeholder per il bob
+        self.ID = dati['ID']
         self.nome = dati['Nome']
         self.razza = dati['Razza']
         self.classe = dati['Classe']
@@ -29,13 +32,22 @@ class Scheda:
         self.livello = 3
         self.punti_vita = ("dVita + (1+dVita/2) * (LIV-1)") #TODO: ruba da classe
         self.iniziativa = self.bonusCaratteristica('Destrezza')
-        self.velocita = dati['Velocità'] #TODO: Ruba da razza
+        self.velocita = 9 #TODO: Ruba da razza
             #Valori calcolati
         self.costruisciTiriSalvezza(dati)
         self.costruisciAbilità(dati)
     
+    def __str__(self):
+        return (f"Nome: {self.nome} \nRazza: {self.razza} \nClasse: {self.classe} \nLivello: {self.livello} \n"
+                f"Punti vita: {self.punti_vita} \nIniziativa: {self.iniziativa} \nVelocità: {self.velocita} \n"
+                f"\nCaratteristiche: {self.caratteristiche} \n"
+                f"\nTiri salvezza: {self.tiri_salvezza} \n"
+                f"\nAbilità: {self.abilita} \n"
+                f"\nCompetenze:{"".join([f"\n   {k}: {v}" for k, v in self.competenze.items()])}\n")
+    
     def bonusCaratteristica(self, car):
-        return ((self.caratteristiche[car]-10) / 2)
+        valore = self.caratteristiche.loc[self.caratteristiche["Caratteristica"] == car, "Valore"].values[0]
+        return (valore - 10) // 2
 
     def costruisciTiriSalvezza(self, dati):
         TS = {  #Imposto i valori base
@@ -82,4 +94,3 @@ def applicaBonusCompetenza(valore, nome, competenze, bonus):
         if(nome == c):
             return (valore + bonus)
     return valore
-    pass
