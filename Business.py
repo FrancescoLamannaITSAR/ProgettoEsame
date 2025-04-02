@@ -1,3 +1,5 @@
+import Persistence
+
 class Scheda:
     #In lettura
     def __init__(self, dati):
@@ -8,10 +10,10 @@ class Scheda:
         self.punti_vita = dati['Punti vita']
         self.iniziativa = dati['Iniziativa']
         self.velocita = dati['Velocità']
-        self.caratteristiche = dati['Caratteristiche']
-        self.tiri_salvezza = dati['Tiri salvezza']
-        self.abilita = dati['Abilità']
-        self.competenze = dati['Competenze']
+        self.caratteristiche = dati['Caratteristiche']  #Dizionario
+        self.tiri_salvezza = dati['Tiri salvezza']      #Dizionario
+        self.abilita = dati['Abilità']                  #Dizionario
+        self.competenze = dati['Competenze']            #Dizionario
 
     #In scrittura
     def __init__(self, dati):
@@ -19,11 +21,12 @@ class Scheda:
         self.nome = dati['Nome']
         self.razza = dati['Razza']
         self.classe = dati['Classe']
-        self.livello = dati['Livello']
             #Valori Input
         self.caratteristiche = dati['Caratteristiche']
         self.competenze = dati['Competenze']
             #Anagrafica calcolati
+        self.ID = Persistence.nuovoID()
+        self.livello = 3
         self.punti_vita = ("dVita + (1+dVita/2) * (LIV-1)") #TODO: ruba da classe
         self.iniziativa = self.bonusCaratteristica('Destrezza')
         self.velocita = dati['Velocità'] #TODO: Ruba da razza
