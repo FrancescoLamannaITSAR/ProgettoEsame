@@ -66,7 +66,7 @@ def input_elenco(tipo, lista):
 def input_caratteristiche():
     scores = []
     caratteristiche = pd.DataFrame({
-        'Caratteristica': ['Forza', 'Destrezza', 'Costituzione', 'Intelligenza', 'Saggezza', 'Carisma'],
+        'Nome': ['Forza', 'Destrezza', 'Costituzione', 'Intelligenza', 'Saggezza', 'Carisma'],
         'Valore': [-1, -1, -1, -1, -1, -1]})
     input('Tiriamo i punteggi per le caratteristiche, 6 serie di 4 dadi a 6 facce, cui tolto il valore più basso, vengono sommati. >>>')
 
@@ -87,12 +87,12 @@ def input_caratteristiche():
 
     for score in scores:
         while True:
-            print(f"Punteggio da assegnare: {score}")
+            print(f"\nPunteggio da assegnare: {score}")
             print("Caratteristiche disponibili:")
             #Qui
             for i, row in caratteristiche.iterrows():
                 if (row["Valore"] == -1):
-                    print(f"- {i}: {row['Caratteristica']}")
+                    print(f"- {i}: {row['Nome']}")
 
             scelta = input("A quale statistica vuoi assegnare questo punteggio? (Inserisci l'indice) ")
             
@@ -110,11 +110,7 @@ def input_caratteristiche():
     return caratteristiche
 
 def input_competenze(): #TODO: fare
-    comp = {
-                "Bonus Competenza": 2,
-                "Tiri Salvezza": ["Destrezza", "Intelligenza"],
-                "Abilità": ["Acrobazia", "Furtività", "Percezione", "Storia"]
-            }
+    comp = pd.Series(["Destrezza", "Intelligenza", "Acrobazia", "Furtività", "Percezione", "Storia"])
     return comp
 
 print("Avventuriero, benvenuto nel programma di creazione schede per D&D!")

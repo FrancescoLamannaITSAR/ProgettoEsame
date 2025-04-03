@@ -10,87 +10,87 @@ class Scheda:
         self.razza = dati['Razza']
         self.classe = dati['Classe']
         self.livello = dati['Livello']
-        self.punti_vita = dati['Punti vita']
+        self.caratteristiche = dati['Caratteristiche']  #PD DataFrame
+        self.bonus_competenza = dati['Bonus Competenza']
+        self.punti_vita = dati['Punti Vita']
         self.iniziativa = dati['Iniziativa']
         self.velocita = dati['Velocità']
-        self.caratteristiche = dati['Caratteristiche']  #Dizionario
-        self.tiri_salvezza = dati['Tiri salvezza']      #Dizionario
-        self.abilita = dati['Abilità']                  #Dizionario
-        self.competenze = dati['Competenze']            #Dizionario
+        self.competenze = dati['Competenze']            #PD Array
+        self.tiri_salvezza = dati['Tiri Salvezza']      #PD DataFrame
+        self.abilità = dati['Abilità']                  #PD DataFrame
 
     #In scrittura
     def __init__(self, dati):
-            #Anagrafica input
+        #DEFINIT
+        self.ID = Persistence.nuovoID()
         self.nome = dati['Nome']
         self.razza = dati['Razza']
         self.classe = dati['Classe']
-            #Valori Input
-        self.caratteristiche = dati['Caratteristiche']
-        self.competenze = dati['Competenze']
-            #Anagrafica calcolati
-        self.ID = Persistence.nuovoID()
         self.livello = 3
+        self.caratteristiche = dati['Caratteristiche']
+        self.bonus_competenza = 2 
         self.punti_vita = ("dVita + (1+dVita/2) * (LIV-1)") #TODO: ruba da classe
-        self.iniziativa = self.bonusCaratteristica('Destrezza')
+        self.iniziativa = int(self.bonusCaratteristica('Destrezza'))
         self.velocita = 9 #TODO: Ruba da razza
-            #Valori calcolati
-        self.costruisciTiriSalvezza(dati)
-        self.costruisciAbilità(dati)
+        self.competenze = dati['Competenze']    #TODO: rivedere
+        self.tiri_salvezza = self.costruisciTiriSalvezza()  #TODO: forse finiti
+        self.abilità = self.costruisciAbilità() #TODO: forse finiti
+        Persistence.creaScheda(self.__dict__)
     
     def __str__(self):
         return (f"Nome: {self.nome} \nRazza: {self.razza} \nClasse: {self.classe} \nLivello: {self.livello} \n"
-                f"Punti vita: {self.punti_vita} \nIniziativa: {self.iniziativa} \nVelocità: {self.velocita} \n"
+                f"Punti vita: {self.punti_vita} \nBonus competenza: {self.bonus_competenza} \nIniziativa: {self.iniziativa} \nVelocità: {self.velocita} \n"
                 f"\nCaratteristiche: {self.caratteristiche} \n"
                 f"\nTiri salvezza: {self.tiri_salvezza} \n"
-                f"\nAbilità: {self.abilita} \n"
+                f"\nAbilità: {self.abilità} \n"
                 f"\nCompetenze:{"".join([f"\n   {k}: {v}" for k, v in self.competenze.items()])}\n")
     
     def bonusCaratteristica(self, car):
-        valore = self.caratteristiche.loc[self.caratteristiche["Caratteristica"] == car, "Valore"].values[0]
+        valore = self.caratteristiche.loc[self.caratteristiche["Nome"] == car, "Valore"].values[0]
         return (valore - 10) // 2
 
-    def costruisciTiriSalvezza(self, dati):
-        TS = {  #Imposto i valori base
-            "Forza": self.bonusCaratteristica("Forza"),
-            "Destrezza": self.bonusCaratteristica("Destrezza"),
-            "Costituzione": self.bonusCaratteristica("Costituzione"),
-            "Intelligenza": self.bonusCaratteristica("Intelligenza"),
-            "Saggezza": self.bonusCaratteristica("Saggezza"),
-            "Carisma": self.bonusCaratteristica("Carisma")
-        }
-        for k, v  in TS.items():    #Poi applico il bonus competenza dove serve
-            TS[k] = applicaBonusCompetenza(v, k, dati['Competenze']['Tiri Salvezza'], dati['Competenze']['Bonus Competenza'])
-        self.tiri_salvezza = TS
-        pass
+    def costruisciTiriSalvezza(self):
+        TS = pd.DataFrame({  
+            'Nome': ['Forza', 'Destrezza', 'Costituzione', 'Intelligenza', 'Saggezza', 'Carisma'],
+            'Valore': [self.bonusCaratteristica("Forza"),
+                       self.bonusCaratteristica("Destrezza"),
+                       self.bonusCaratteristica("Costituzione"),
+                       self.bonusCaratteristica("Intelligenza"),
+                       self.bonusCaratteristica("Saggezza"),
+                       self.bonusCaratteristica("Carisma")]
+        })
+        TS = applicaBonusCompetenza(TS, self.competenze, self.bonus_competenza)
+        return TS  
 
-    def costruisciAbilità(self, dati):
-        A = {
-            "Acrobazia": self.bonusCaratteristica("Destrezza"),
-            "Addestrare Animali": self.bonusCaratteristica("Saggezza"),
-            "Arcano": self.bonusCaratteristica("Intelligenza"),
-            "Atletica": self.bonusCaratteristica("Forza"),
-            "Furtività": self.bonusCaratteristica("Destrezza"),
-            "Indagare": self.bonusCaratteristica("Intelligenza"),
-            "Inganno": self.bonusCaratteristica("Carisma"),
-            "Intimidire": self.bonusCaratteristica("Carisma"),
-            "Intrattenere": self.bonusCaratteristica("Carisma"),
-            "Intuizione": self.bonusCaratteristica("Saggezza"),
-            "Medicina": self.bonusCaratteristica("Saggezza"),
-            "Natura": self.bonusCaratteristica("Intelligenza"),
-            "Percezione": self.bonusCaratteristica("Saggezza"),
-            "Persuasione": self.bonusCaratteristica("Carisma"),
-            "Rapidità di Mano": self.bonusCaratteristica("Destrezza"),
-            "Religione": self.bonusCaratteristica("Intelligenza"),
-            "Sopravvivenza": self.bonusCaratteristica("Saggezza"),
-            "Storia": self.bonusCaratteristica("Intelligenza")
-        }
-        for k, v  in A.items():    #Poi applico il bonus competenza dove serve
-            A[k] = applicaBonusCompetenza(v, k, dati['Competenze']['Abilità'], dati['Competenze']['Bonus Competenza'])
-        self.abilita = A
+    def costruisciAbilità(self):
+        A = pd.DataFrame({
+            'Nome': ['Acrobazia', 'Addestrare Animali', 'Arcano', 'Atletica', 'Furtività', 'Indagare', 
+                'Inganno', 'Intimidire', 'Intrattenere', 'Intuizione', 'Medicina', 'Natura', 
+                'Percezione', 'Persuasione', 'Rapidità di Mano', 'Religione', 'Sopravvivenza', 'Storia'],
+            'Valore': [self.bonusCaratteristica("Destrezza"),
+                self.bonusCaratteristica("Saggezza"),
+                self.bonusCaratteristica("Intelligenza"),
+                self.bonusCaratteristica("Forza"),
+                self.bonusCaratteristica("Destrezza"),
+                self.bonusCaratteristica("Intelligenza"),
+                self.bonusCaratteristica("Carisma"),
+                self.bonusCaratteristica("Carisma"),
+                self.bonusCaratteristica("Carisma"),
+                self.bonusCaratteristica("Saggezza"),
+                self.bonusCaratteristica("Saggezza"),
+                self.bonusCaratteristica("Intelligenza"),
+                self.bonusCaratteristica("Saggezza"),
+                self.bonusCaratteristica("Carisma"),
+                self.bonusCaratteristica("Destrezza"),
+                self.bonusCaratteristica("Intelligenza"),
+                self.bonusCaratteristica("Saggezza"),
+                self.bonusCaratteristica("Intelligenza")]
+        })
+        A = applicaBonusCompetenza(A, self.competenze, self.bonus_competenza)
+        return A
 
-#Se NOME compare nella lista COMPETENZE, applico il BONUS sommandolo al VALORE
-def applicaBonusCompetenza(valore, nome, competenze, bonus):
-    for c in competenze:
-        if(nome == c):
-            return (valore + bonus)
-    return valore
+def applicaBonusCompetenza(df, competenze, bonus_competenza):
+    df['Competenza'] = df['Nome'].isin(competenze)     # Aggiungiamo la serie di competenze a df, per verificare dove c'è competenza
+    df['Valore'] += df['Competenza'] * bonus_competenza # Applichiamo il bonus solo a chi ha la competenza
+    df.drop(columns='Competenza', inplace=True)
+    return df

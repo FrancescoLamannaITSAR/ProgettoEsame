@@ -5,9 +5,6 @@
         "Razza": null,
         "Classe": null,
         "Livello": null,
-        "Punti Vita": null,
-        "Iniziativa": null,
-        "Velocità": null,
         "Caratteristiche": {
             "Forza": null,
             "Destrezza": null,
@@ -16,7 +13,12 @@
             "Saggezza": null,
             "Carisma": null
         },
-        "Tiri salvezza": {
+        "Bonus Competenza": null,
+        "Punti Vita": null,
+        "Iniziativa": null,
+        "Velocit\u00c3\u00a0": null,
+        "Competenze": [],
+        "Tiri Salvezza": {
             "Forza": null,
             "Destrezza": null,
             "Costituzione": null,
@@ -24,12 +26,12 @@
             "Saggezza": null,
             "Carisma": null
         },
-       "Abilità": {
+        "Abilit\u00c3\u00a0": {
             "Acrobazia": null,
             "Addestrare Animali": null,
             "Arcano": null,
             "Atletica": null,
-            "Furtività": null,
+            "Furtivit\u00c3\u00a0": null,
             "Indagare": null,
             "Inganno": null,
             "Intimidire": null,
@@ -39,15 +41,120 @@
             "Natura": null,
             "Percezione": null,
             "Persuasione": null,
-            "Rapidità di Mano": null,
+            "Rapidit\u00c3\u00a0 di Mano": null,
             "Religione": null,
             "Sopravvivenza": null,
             "Storia": null
+        }
+    },
+    {
+        "Id": 2,
+        "Nome": "Miriel",
+        "Razza": "Tiefling",
+        "Classe": "Bardo",
+        "Livello": 3,
+        "Caratteristiche": {
+            "Forza": 6,
+            "Destrezza": 15,
+            "Costituzione": 10,
+            "Intelligenza": 15,
+            "Saggezza": 13,
+            "Carisma": 15
         },
-        "Competenze": {
-            "Bonus Competenza": null,
-            "Tiri Salvezza": [],
-            "Abilità": []
+        "Bonus Competenza": 2,
+        "Punti Vita": "dVita + (1+dVita/2) * (LIV-1)",
+        "Iniziativa": 2,
+        "Velocita": 9,
+        "Competenze": [
+            "Destrezza",
+            "Intelligenza",
+            "Acrobazia",
+            "Furtivit\u00c3\u00a0",
+            "Percezione",
+            "Storia"
+        ],
+        "Tiri Salvezza": {
+            "Forza": -2,
+            "Destrezza": 4,
+            "Costituzione": 0,
+            "Intelligenza": 4,
+            "Saggezza": 1,
+            "Carisma": 2
+        },
+        "Abilit\u00c3\u00a0": {
+            "Acrobazia": 4,
+            "Addestrare Animali": 1,
+            "Arcano": 2,
+            "Atletica": -2,
+            "Furtivit\u00c3\u00a0": 4,
+            "Indagare": 2,
+            "Inganno": 2,
+            "Intimidire": 2,
+            "Intrattenere": 2,
+            "Intuizione": 1,
+            "Medicina": 1,
+            "Natura": 2,
+            "Percezione": 3,
+            "Persuasione": 2,
+            "Rapidit\u00c3\u00a0 di Mano": 2,
+            "Religione": 2,
+            "Sopravvivenza": 1,
+            "Storia": 4
+        }
+    },
+    {
+        "Id": 3,
+        "Nome": "w",
+        "Razza": "Draconide",
+        "Classe": "Chierico",
+        "Livello": 3,
+        "Caratteristiche": {
+            "Forza": 15,
+            "Destrezza": 13,
+            "Costituzione": 12,
+            "Intelligenza": 10,
+            "Saggezza": 9,
+            "Carisma": 7
+        },
+        "Bonus Competenza": 2,
+        "Punti Vita": "dVita + (1+dVita/2) * (LIV-1)",
+        "Iniziativa": 1,
+        "Velocita": 9,
+        "Competenze": [
+            "Destrezza",
+            "Intelligenza",
+            "Acrobazia",
+            "Furtivit\u00e0",
+            "Percezione",
+            "Storia"
+        ],
+        "Tiri Salvezza": {
+            "Forza": 2,
+            "Destrezza": 3,
+            "Costituzione": 1,
+            "Intelligenza": 2,
+            "Saggezza": -1,
+            "Carisma": -2
+        },
+        "Abilit\u00e0": {
+            "Acrobazia": 3,
+            "Addestrare Animali": -1,
+            "Arcano": 0,
+            "Atletica": 2,
+            "Furtivit\u00e0": 3,
+            "Indagare": 0,
+            "Inganno": -2,
+            "Intimidire": -2,
+            "Intrattenere": -2,
+            "Intuizione": -1,
+            "Medicina": -1,
+            "Natura": 0,
+            "Percezione": 1,
+            "Persuasione": -2,
+            "Rapidit\u00e0 di Mano": 1,
+            "Religione": 0,
+            "Sopravvivenza": -1,
+            "Storia": 2
         }
     }
 ]
