@@ -33,16 +33,19 @@ def menu():
 
 def scrivi_scheda():
     dati = {}
-    dati['Nome'] = input("Come si chiama il tuo eroe? ")    #TODO: controlla se esiste già
+    dati['Nome'] = input("Come si chiama il tuo eroe? ")
     dati['Razza'] = input_elenco('razza', razze)
     dati['Classe'] = input_elenco('classe', classi)
     dati['Caratteristiche'] = input_caratteristiche()
-    dati['Competenze'] = input_competenze() #TODO: Scratchare abilità e TS da classe
+    dati['Competenze'] = input_competenze(dati['Classe'])
     scheda = Business.Scheda(dati)
     print("Scheda salvata con i seguenti dati:\n", scheda)
 
 def leggi_scheda():
-    print("Funzione per leggere una scheda.")
+    print(Business.infoBoxBU())
+    ID = input("Inserisci l'ID della scheda da leggere: ")
+    scheda = Business.Scheda([], ID=ID)
+    print("", scheda)
     # Implementa qui la logica per leggere una scheda
 
 def modifica_scheda():
@@ -109,9 +112,51 @@ def input_caratteristiche():
     print("Caratteristiche finali assegnate:", caratteristiche)
     return caratteristiche
 
-def input_competenze(): #TODO: fare
-    comp = pd.Series(["Destrezza", "Intelligenza", "Acrobazia", "Furtività", "Percezione", "Storia"])
-    return comp
+def input_competenze(classe):
+    if classe == "Bardo":   #Non ho bisogno di fare scraping, perchè il bardo può scegliere tra tutte
+        ab = ['Acrobazia', 'Addestrare Animali', 'Arcano', 'Atletica', 'Furtivita', 'Indagare', 
+                'Inganno', 'Intimidire', 'Intrattenere', 'Intuizione', 'Medicina', 'Natura', 
+                'Percezione', 'Persuasione', 'Rapidita di Mano', 'Religione', 'Sopravvivenza', 'Storia']
+        return scegli_competenze(ab, 3)
+    else:
+        if classe == "Ladro":
+            n = 4
+        elif classe == "Ranger":
+            n = 3
+        else:
+            n = 2
+        return scegli_competenze(Business.findAbilitaBU(classe), n)
+
+def scegli_competenze(abilità_disponibili, numero_da_scegliere):
+    competenze_selezionate = []
+    print(f"\nScegli {numero_da_scegliere} competenze tra le seguenti:")
+    # Crea una lista numerata delle abilità disponibili
+    while len(competenze_selezionate) < numero_da_scegliere:
+        # Mostra le abilità disponibili, aggiornando l'elenco ogni volta
+        for i, abilita in enumerate(abilità_disponibili, 1):
+            print(f"{i}. {abilita}")
+
+        try:
+            # Chiedi all'utente di scegliere un numero
+            scelta = int(input(f"Seleziona la competenza {len(competenze_selezionate) + 1}/{numero_da_scegliere}: "))
+
+            # Verifica che la scelta sia valida
+            if scelta < 1 or scelta > len(abilità_disponibili):
+                print("Scelta non valida, riprova.")
+            else:
+                competenza_scelta = abilità_disponibili[scelta - 1]
+
+                # Aggiungi la competenza scelta alla lista e rimuovila dall'elenco disponibile
+                if competenza_scelta not in competenze_selezionate:
+                    competenze_selezionate.append(competenza_scelta)
+                    abilità_disponibili.remove(competenza_scelta)  # Rimuove l'abilità scelta
+                else:
+                    print("Questa competenza è già stata selezionata, riprova.")
+        except ValueError:
+            print("Per favore, inserisci un numero valido.")
+
+    print(f"Competenze selezionate: {', '.join(competenze_selezionate)}")
+    return competenze_selezionate
 
 print("Avventuriero, benvenuto nel programma di creazione schede per D&D!")
 menu()

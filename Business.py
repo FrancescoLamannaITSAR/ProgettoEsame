@@ -1,41 +1,43 @@
 import Persistence
+import Scraping
 import pandas as pd
 
 class Scheda:
-    #In lettura
-    def __init__(self, dati, bob):
-        self.bob = bob      #placeholder per il bob
-        self.ID = dati['ID']
-        self.nome = dati['Nome']
-        self.razza = dati['Razza']
-        self.classe = dati['Classe']
-        self.livello = dati['Livello']
-        self.caratteristiche = dati['Caratteristiche']  #PD DataFrame
-        self.bonus_competenza = dati['Bonus Competenza']
-        self.punti_vita = dati['Punti Vita']
-        self.iniziativa = dati['Iniziativa']
-        self.velocita = dati['Velocità']
-        self.competenze = dati['Competenze']            #PD Array
-        self.tiri_salvezza = dati['Tiri Salvezza']      #PD DataFrame
-        self.abilità = dati['Abilità']                  #PD DataFrame
-
     #In scrittura
-    def __init__(self, dati):
-        #DEFINIT
-        self.ID = Persistence.nuovoID()
-        self.nome = dati['Nome']
-        self.razza = dati['Razza']
-        self.classe = dati['Classe']
-        self.livello = 3
-        self.caratteristiche = dati['Caratteristiche']
-        self.bonus_competenza = 2 
-        self.punti_vita = ("dVita + (1+dVita/2) * (LIV-1)") #TODO: ruba da classe
-        self.iniziativa = int(self.bonusCaratteristica('Destrezza'))
-        self.velocita = 9 #TODO: Ruba da razza
-        self.competenze = dati['Competenze']    #TODO: rivedere
-        self.tiri_salvezza = self.costruisciTiriSalvezza()  #TODO: forse finiti
-        self.abilità = self.costruisciAbilità() #TODO: forse finiti
-        Persistence.creaScheda(self.__dict__)
+    def __init__(self, dati, ID=None):
+        if ID is None:
+            self.ID = Persistence.nuovoID()
+            self.nome = dati['Nome']
+            self.razza = dati['Razza']
+            self.classe = dati['Classe']
+            self.livello = 3
+            self.caratteristiche = dati['Caratteristiche']
+            self.bonus_competenza = 2 
+            dadoVita = int(Scraping.findDV(self.classe))
+            self.punti_vita = dadoVita + (1 + dadoVita // 2) * (self.livello - 1) + self.bonusCaratteristica('Costituzione') * self.livello
+            self.iniziativa = int(self.bonusCaratteristica('Destrezza'))
+            self.velocita = 9
+            self.competenze = Scraping.findTS(self.classe) + dati['Competenze']
+            self.tiri_salvezza = self.costruisciTiriSalvezza()
+            self.abilità = self.costruisciAbilità()
+            Persistence.creaScheda(self.__dict__)
+        else:
+            print(f"Lettura: dati = {dati}, ID = {ID}")
+            self.ID = ID
+            #Dati da persistance che scrivo sul mio oggetto
+            lettura = Persistence.leggi_scheda(ID)
+            self.nome = lettura['Nome']
+            self.razza = lettura['Razza']
+            self.classe = lettura['Classe']
+            self.livello = lettura['Livello']
+            self.caratteristiche = lettura['Caratteristiche']  #PD DataFrame
+            self.bonus_competenza = lettura['Bonus Competenza']
+            self.punti_vita = lettura['Punti Vita']
+            self.iniziativa = lettura['Iniziativa']
+            self.velocita = lettura['Velocita']
+            self.competenze = lettura['Competenze']            #PD Array
+            self.tiri_salvezza = lettura['Tiri Salvezza']      #PD DataFrame
+            self.abilità = lettura['Abilita']                  #PD DataFrame
     
     def __str__(self):
         return (f"Nome: {self.nome} \nRazza: {self.razza} \nClasse: {self.classe} \nLivello: {self.livello} \n"
@@ -43,7 +45,7 @@ class Scheda:
                 f"\nCaratteristiche: {self.caratteristiche} \n"
                 f"\nTiri salvezza: {self.tiri_salvezza} \n"
                 f"\nAbilità: {self.abilità} \n"
-                f"\nCompetenze:{"".join([f"\n   {k}: {v}" for k, v in self.competenze.items()])}\n")
+                f"\nCompetenze:{"".join([f"\n   {comp}" for comp in self.competenze])}\n")
     
     def bonusCaratteristica(self, car):
         valore = self.caratteristiche.loc[self.caratteristiche["Nome"] == car, "Valore"].values[0]
@@ -64,9 +66,9 @@ class Scheda:
 
     def costruisciAbilità(self):
         A = pd.DataFrame({
-            'Nome': ['Acrobazia', 'Addestrare Animali', 'Arcano', 'Atletica', 'Furtività', 'Indagare', 
+            'Nome': ['Acrobazia', 'Addestrare Animali', 'Arcano', 'Atletica', 'Furtivita', 'Indagare', 
                 'Inganno', 'Intimidire', 'Intrattenere', 'Intuizione', 'Medicina', 'Natura', 
-                'Percezione', 'Persuasione', 'Rapidità di Mano', 'Religione', 'Sopravvivenza', 'Storia'],
+                'Percezione', 'Persuasione', 'Rapidita di Mano', 'Religione', 'Sopravvivenza', 'Storia'],
             'Valore': [self.bonusCaratteristica("Destrezza"),
                 self.bonusCaratteristica("Saggezza"),
                 self.bonusCaratteristica("Intelligenza"),
@@ -94,3 +96,9 @@ def applicaBonusCompetenza(df, competenze, bonus_competenza):
     df['Valore'] += df['Competenza'] * bonus_competenza # Applichiamo il bonus solo a chi ha la competenza
     df.drop(columns='Competenza', inplace=True)
     return df
+
+def findAbilitaBU(classe): #Usato per isolare lo scraping dall'interfaccia
+    return Scraping.findAbilita(classe)
+
+def infoBoxBU():        #Usato per isolare la persistance dall'interfaccia
+    return Persistence.infoBox()
