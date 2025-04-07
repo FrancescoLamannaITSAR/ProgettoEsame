@@ -10,7 +10,10 @@ def creaScheda(scheda):
     try:
         with open('Sheets.json', 'r', encoding='utf-8') as file:
             data = json.load(file)
-        scheda = {k.replace("_", " ").title(): v for k, v in scheda.items()}
+        scheda = {
+            (k if k == "ID" else k.replace("_", " ").title()): v 
+            for k, v in scheda.items()
+        }
         
         for chiave in ["Caratteristiche", "Tiri Salvezza", "Abilità"]:  #Converto il DF di pandas in un dizionario
             scheda[chiave] = {row["Nome"]: row["Valore"] for _, row in scheda[chiave].iterrows()}

@@ -15,16 +15,13 @@ def menu():
         print("Menu:")
         print("1. Scrivi una scheda")
         print("2. Leggi una scheda")
-        print("3. Modifica una scheda")
         print("q. Esci")
-        scelta = input("Seleziona un'opzione (1/2/3/q): ")
+        scelta = input("Seleziona un'opzione (1/2/q): ")
 
         if scelta == "1":
             scrivi_scheda()
         elif scelta == "2":
             leggi_scheda()
-        elif scelta == "3":
-            modifica_scheda()
         elif scelta == "q":
             print("Uscita dal programma.")
             break
@@ -47,10 +44,6 @@ def leggi_scheda():
     scheda = Business.Scheda([], ID=ID)
     print("", scheda)
     # Implementa qui la logica per leggere una scheda
-
-def modifica_scheda():
-    print("Funzione per modificare una scheda.")
-    # Implementa qui la logica per modificare una scheda
 
 def input_elenco(tipo, lista):
      print(f"Scegliamo la {tipo}:")

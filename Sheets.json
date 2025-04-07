@@ -101,5 +101,58 @@
             "Sopravvivenza": 1,
             "Storia": 6
         }
+    },
+    {
+        "ID": 2,
+        "Nome": "Drake",
+        "Razza": "Nano",
+        "Classe": "Barbaro",
+        "Livello": 3,
+        "Caratteristiche": {
+            "Forza": 16,
+            "Destrezza": 15,
+            "Costituzione": 13,
+            "Intelligenza": 12,
+            "Saggezza": 12,
+            "Carisma": 8
+        },
+        "Bonus Competenza": 2,
+        "Punti Vita": 29,
+        "Iniziativa": 2,
+        "Velocita": 9,
+        "Competenze": [
+            "Forza",
+            "Costituzione",
+            "Atletica",
+            "Intimidire"
+        ],
+        "Tiri Salvezza": {
+            "Forza": 5,
+            "Destrezza": 2,
+            "Costituzione": 3,
+            "Intelligenza": 1,
+            "Saggezza": 1,
+            "Carisma": -1
+        },
+        "Abilit\u00e0": {
+            "Acrobazia": 2,
+            "Addestrare Animali": 1,
+            "Arcano": 1,
+            "Atletica": 5,
+            "Furtivita": 2,
+            "Indagare": 1,
+            "Inganno": -1,
+            "Intimidire": 1,
+            "Intrattenere": -1,
+            "Intuizione": 1,
+            "Medicina": 1,
+            "Natura": 1,
+            "Percezione": 1,
+            "Persuasione": -1,
+            "Rapidita di Mano": 2,
+            "Religione": 1,
+            "Sopravvivenza": 1,
+            "Storia": 1
+        }
     }
 ]
